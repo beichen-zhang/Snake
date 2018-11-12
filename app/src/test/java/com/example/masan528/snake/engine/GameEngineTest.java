@@ -45,7 +45,7 @@ public class GameEngineTest {
     @Test
     public void collision_wall(){
         GameEngine engine = new GameEngine();
-        TileType [][]map= engine.getMap();
+        //TileType [][]map= engine.getMap();
         Coordinate head = engine.snake.head();
         int step_legal = engine.HEIGHT-1-head.getY()-1;
         for (int i=0; i<step_legal;i++){
@@ -59,7 +59,7 @@ public class GameEngineTest {
     @Test
     public void self_collision(){
         GameEngine engine = new GameEngine();
-        TileType [][]map= engine.getMap();
+        //TileType [][]map= engine.getMap();
         engine.switchDirection(Direction.EAST);
         engine.update();
         for (int i=0;i<engine.snake.getSize();i++){

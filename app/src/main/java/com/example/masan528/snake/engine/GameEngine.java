@@ -19,9 +19,9 @@ public class GameEngine {
 
 
     public ArrayList<Coordinate> walls = new ArrayList<Coordinate>();
-    //ArrayList<Coordinate> snake = new ArrayList<Coordinate>();
     public Coordinate foodLocation = new Coordinate(0,0);
     public Snake snake;
+    //constructor
     public GameEngine(){
         init();
     }
@@ -32,19 +32,21 @@ public class GameEngine {
         initFood();
     }
 
+    //initialize the wall margin
     private void initWalls() {
         //top and bottom
         for (int i=0;i<WIDTH;i++){
             walls.add(new Coordinate(i,0));
             walls.add(new Coordinate(i,HEIGHT-1));
         }
-
+        //left and right
         for (int i =0;i<HEIGHT;i++){
             walls.add(new Coordinate(0,i));
             walls.add(new Coordinate(WIDTH-1,i));
         }
     }
 
+    //random generate the food. Call on initialization and once the food is ate.
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void initFood() {
         int randomx = ThreadLocalRandom.current().nextInt(1,27);
@@ -53,6 +55,7 @@ public class GameEngine {
         foodLocation.setY(randomy);
     }
 
+    //get the current position of the data
     public TileType[][] getMap(){
         TileType [][] map = new TileType[WIDTH][HEIGHT];
 
@@ -76,6 +79,7 @@ public class GameEngine {
         return map;
     }
 
+    //change snake movement direction
     public void switchDirection(Direction next){
         if (direction == Direction.SOUTH && next == Direction.NORTH ){
             return;
@@ -92,6 +96,7 @@ public class GameEngine {
         direction = next;
     }
 
+    //uodate snake to next step
     public void update(){
         Coordinate end = snake.get(snake.getSize()-1);
         switch (direction){
@@ -110,18 +115,21 @@ public class GameEngine {
                 break;
         }
 
+        //check collision of the wall
         for (Coordinate wall: walls){
             if (snake.head().equals(wall)){
                 gameState = GameState.Lost;
             }
         }
 
+        //check self collsion
         for (int i=1; i<snake.getSize();i++){
             if(snake.head().equals(snake.get(i))){
                 gameState = GameState.Lost;
             }
         }
 
+        //check food
         if (snake.head().equals(foodLocation)){
             snake.add(end);
             initFood();
